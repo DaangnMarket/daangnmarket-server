@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientServ
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import com.clone.daangnmarketserver.security.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -18,6 +19,7 @@ public class SecurityConfig {
 
   private final JdbcTemplate jdbcTemplate;
   private final ClientRegistrationRepository clientRegistrationRepository;
+  private final CustomOAuth2UserService customOAuth2UserService;
 
   @Bean
   public OAuth2AuthorizedClientService oAuth2AuthorizedClientService() {
@@ -27,7 +29,9 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.oauth2Login()
-      .authorizedClientService(oAuth2AuthorizedClientService());
+      .authorizedClientService(oAuth2AuthorizedClientService())
+      .userInfoEndpoint()
+      .userService(customOAuth2UserService);
 
     http.authorizeHttpRequests()
       .anyRequest().authenticated();
