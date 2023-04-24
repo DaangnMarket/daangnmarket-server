@@ -1,11 +1,12 @@
 package com.clone.daangnmarketserver.common;
 
 import com.google.common.base.Preconditions;
+import java.io.Serializable;
 import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class Id<R, V> {
+public class Id<R, V> implements Serializable {
 
   private final Class<R> reference;
 

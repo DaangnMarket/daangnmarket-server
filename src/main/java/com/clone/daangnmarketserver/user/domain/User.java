@@ -15,7 +15,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Getter
 public class User {
 
   @Id
@@ -24,14 +23,14 @@ public class User {
 
   private String profileImageUrl;
 
-  @Column(length = 20, unique = true, nullable = false)
+  @Column(length = 20, unique = true, nullable = false, updatable = false)
   private String providerId;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 8, nullable = false)
+  @Column(length = 8, nullable = false, updatable = false)
   private OAuth2Provider provider;
 
-  @Column(length = 40, nullable = false)
+  @Column(length = 40, nullable = false, updatable = false)
   private String email;
 
   @Column(length = 15, nullable = false)
@@ -44,15 +43,17 @@ public class User {
   @Column(length = 15, nullable = false)
   private Role role;
 
+  private int dealCount;
+
   protected User() {
   }
 
   public User(String providerId, OAuth2Provider provider, String email) {
-    this(null, providerId, provider, email, "당근", BigDecimal.valueOf(36.5), Role.ROLE_USER);
+    this(null, providerId, provider, email, "당근", BigDecimal.valueOf(36.5), Role.ROLE_USER, 0);
   }
 
   private User(String profileImageUrl, String providerId, OAuth2Provider provider, String email,
-    String name, BigDecimal temperature, Role role) {
+    String name, BigDecimal temperature, Role role, int dealCount) {
     Preconditions.checkArgument(providerId != null, "providerId must be provided.");
     Preconditions.checkArgument(provider != null, "provider must be provided.");
     Preconditions.checkArgument(email != null, "email must be provided.");
@@ -67,6 +68,49 @@ public class User {
     this.name = name;
     this.temperature = temperature;
     this.role = role;
+    this.dealCount = dealCount;
+  }
+
+  public void update(String name) {
+    if (name != null) {
+      this.name = name;
+    }
+  }
+
+  public com.clone.daangnmarketserver.common.Id<User, Long> getId() {
+    return com.clone.daangnmarketserver.common.Id.of(User.class, id);
+  }
+
+  public String getProfileImageUrl() {
+    return profileImageUrl;
+  }
+
+  public String getProviderId() {
+    return providerId;
+  }
+
+  public OAuth2Provider getProvider() {
+    return provider;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public BigDecimal getTemperature() {
+    return temperature;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public int getDealCount() {
+    return dealCount;
   }
 
   @Override
