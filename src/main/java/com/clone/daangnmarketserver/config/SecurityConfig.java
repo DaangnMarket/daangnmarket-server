@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import com.clone.daangnmarketserver.security.CustomOAuth2UserService;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -28,12 +29,16 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf()
+      .disable();
+
     http.oauth2Login()
       .authorizedClientService(oAuth2AuthorizedClientService())
       .userInfoEndpoint()
       .userService(customOAuth2UserService);
 
     http.authorizeHttpRequests()
+      .requestMatchers("/users/**").hasRole("USER")
       .anyRequest().authenticated();
 
     return http.build();
