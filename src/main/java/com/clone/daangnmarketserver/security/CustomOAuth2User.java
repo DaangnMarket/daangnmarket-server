@@ -18,11 +18,11 @@ public class CustomOAuth2User implements OAuth2User, Serializable {
 
   private final OAuth2User oAuth2User;
 
-  private final Id<User, Long> id;
+  private final Id<User> id;
 
   private final Role role;
 
-  public CustomOAuth2User(OAuth2User oAuth2User, Id<User, Long> id, Role role) {
+  public CustomOAuth2User(OAuth2User oAuth2User, Id<User> id, Role role) {
     Preconditions.checkArgument(oAuth2User != null, "oAuth2User must be provided.");
     Preconditions.checkArgument(id != null, "id must be provided.");
     Preconditions.checkArgument(role != null, "role must be provided.");
@@ -36,7 +36,7 @@ public class CustomOAuth2User implements OAuth2User, Serializable {
     return oAuth2User;
   }
 
-  public Id<User, Long> getId() {
+  public Id<User> getId() {
     return id;
   }
 

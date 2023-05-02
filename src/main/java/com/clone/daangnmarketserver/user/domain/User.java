@@ -77,7 +77,7 @@ public class User {
     }
   }
 
-  public com.clone.daangnmarketserver.common.Id<User, Long> getId() {
+  public com.clone.daangnmarketserver.common.Id<User> getId() {
     return com.clone.daangnmarketserver.common.Id.of(User.class, id);
   }
 

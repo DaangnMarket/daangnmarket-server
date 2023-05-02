@@ -6,38 +6,42 @@ import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class Id<R, V> implements Serializable {
+public class Id<R> implements Serializable {
 
-  private final Class<R> reference;
+  private Class<R> reference;
 
-  private final V value;
+  private Long value;
 
-  private Id(Class<R> reference, V value) {
+  protected Id() {
+  }
+
+  private Id(Class<R> reference, Long value) {
     this.reference = reference;
     this.value = value;
   }
 
-  public static <R, V> Id<R, V> of(Class<R> reference, V value) {
+  public static <R> Id<R> of(Class<R> reference, Long value) {
     Preconditions.checkArgument(reference != null, "reference must be provided.");
     Preconditions.checkArgument(value != null, "value must be provided.");
 
     return new Id<>(reference, value);
   }
 
-  public V value() {
+  public Long value() {
     return value;
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Id<?, ?> id = (Id<?, ?>) o;
-    return reference.equals(id.reference) && value.equals(id.value);
+      if (this == o) {
+          return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+          return false;
+      }
+    Id<?> id = (Id<?>) o;
+    return com.google.common.base.Objects.equal(reference, id.reference)
+        && com.google.common.base.Objects.equal(value, id.value);
   }
 
   @Override
@@ -48,8 +52,8 @@ public class Id<R, V> implements Serializable {
   @Override
   public String toString() {
     return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-      .append("reference", reference)
-      .append("value", value)
-      .toString();
+        .append("reference", reference)
+        .append("value", value)
+        .toString();
   }
 }
