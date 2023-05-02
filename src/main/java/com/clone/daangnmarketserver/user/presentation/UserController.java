@@ -6,10 +6,6 @@ import com.clone.daangnmarketserver.user.application.UserService;
 import com.clone.daangnmarketserver.user.domain.User;
 import com.clone.daangnmarketserver.user.presentation.dto.UpdateRequest;
 import com.clone.daangnmarketserver.user.presentation.dto.UserResponse;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,14 +26,14 @@ public class UserController {
 
   @GetMapping("/me")
   public ResponseEntity<UserResponse> getMe(@AuthenticationPrincipal CustomOAuth2User user) {
-    Id<User, Long> id = user.getId();
+    Id<User> id = user.getId();
     UserResponse me = userService.getMe(id);
     return ResponseEntity.ok(me);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
-    Id<User, Long> findId = Id.of(User.class, id);
+    Id<User> findId = Id.of(User.class, id);
     UserResponse findUser = userService.findById(findId);
     return ResponseEntity.ok(findUser);
   }
@@ -45,14 +41,14 @@ public class UserController {
   @PatchMapping
   public ResponseEntity<Void> update(@AuthenticationPrincipal CustomOAuth2User user, @RequestBody
   UpdateRequest dto) {
-    Id<User, Long> id = user.getId();
+    Id<User> id = user.getId();
     userService.update(id, dto);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping
   public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomOAuth2User user) {
-    Id<User, Long> id = user.getId();
+    Id<User> id = user.getId();
     userService.delete(id);
     return ResponseEntity.noContent().build();
   }
